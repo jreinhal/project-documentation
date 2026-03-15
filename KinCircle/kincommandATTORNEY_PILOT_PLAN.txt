@@ -1,0 +1,79 @@
+# Attorney Pilot Program Plan
+
+## Goal
+Validate attorney‑led adoption and pricing by proving time savings, documentation quality, and willingness to pay.
+
+## Pilot Objectives
+1. Quantify paralegal time savings per Medicaid case.
+2. Validate demand for a premium “Audit Defense” report.
+3. Test attorney partner pricing models with real usage data.
+
+## Target Profile
+- Elder‑law attorneys or Medicaid planners handling 20+ cases/year.
+- Firms with staff time spent on record reconstruction.
+- Willing to trial a client‑facing workflow for 60–90 days.
+
+## Pilot Structure (60–90 Days)
+**Cohort:** 3–5 firms (target 5–15 total active client families).
+
+### Phase 1: Onboarding (Week 1–2)
+- Create partner accounts and provide white‑label or branded setup.
+- Provide a client onboarding kit (PDF + email template).
+- Set baseline metrics:
+  - Paralegal hours spent per case before KinCircle.
+  - Typical number of missing documents.
+
+### Phase 2: Active Usage (Week 3–8)
+- Attorneys require new clients to log expenses + documentation in KinCircle.
+- Weekly check‑ins with the firm’s primary contact.
+- Collect quantitative metrics:
+  - Hours saved per case.
+  - Missing documentation rate.
+  - Time to assemble client packet.
+
+### Phase 3: Evaluation & Pricing (Week 9–12)
+- Review outcomes with each firm.
+- Pilot pricing tests:
+  - **Option A:** $8/month per active client.
+  - **Option B:** $199/month flat.
+  - **Option C:** Revenue share on audit reports.
+- Capture feedback on willingness to pay and preferred model.
+
+## Success Criteria
+- **Operational:** ≥ 50% reduction in paralegal time per case.
+- **Adoption:** ≥ 70% of pilot clients complete 5+ entries in 14 days.
+- **Pricing:** At least 2 firms accept a paid model after pilot.
+
+## Required Assets
+- Sample “Medicaid Audit” report PDF.
+- Client onboarding email template.
+- Quick‑start guide for caregivers (1‑page PDF).
+
+## Data Collection Plan
+- Baseline survey at kickoff.
+- Midpoint check‑in survey at week 4–5.
+- Final survey + debrief at pilot end.
+
+## Attorney Outreach Template (Email)
+Subject: Reduce paralegal hours on Medicaid cases
+
+Hi [First Name],
+
+I’m working on KinCircle, a tool that helps families track caregiving expenses and documentation so Medicaid cases are faster to prepare.
+
+We’re running a small pilot with a few elder‑law firms to measure time savings per case. Early estimates show 8–10 hours saved per case.
+
+Would you be open to a 15‑minute call this week to see a demo and discuss the pilot?
+
+Best,
+[Your Name]
+
+## Pricing Validation Questions
+- “Would $8/month per active client be acceptable if you save 8–10 hours per case?”
+- “Would you prefer a flat monthly fee or per‑case pricing?”
+- “Would you pay $149 for a one‑time audit report if it prevents denials or rework?”
+
+## Next Steps
+1. Identify 10 target firms and send outreach emails.
+2. Book 3–5 demo calls.
+3. Start pilot cohort and track results in a shared spreadsheet.

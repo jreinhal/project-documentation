@@ -1,0 +1,58 @@
+# KinCircle Executive Summary (One Page)
+
+## Overview
+KinCircle is a caregiving operations platform that helps families track expenses, time, and documentation to reduce conflict and prepare for Medicaid look‑back requirements. It combines local‑first usability with AI‑assisted workflows (receipt scanning, voice entry, and ledger insights) to make caregiving records reliable and exportable.
+
+## Problem
+Family caregivers often shoulder the majority of work without a trusted, shared record of time, expenses, and documentation. This creates:
+- Sibling conflict over contributions and reimbursements.
+- Poor documentation for Medicaid planning and legal compliance.
+- Administrative overload for elder‑law attorneys and planners.
+
+## Solution
+KinCircle centralizes caregiving records so families and professionals can:
+- Log expenses and time contributions in a structured ledger.
+- Convert completed tasks into tracked entries automatically.
+- Store documents in a secure vault with audit‑friendly organization.
+- Generate summaries that support legal and financial planning.
+
+## Why Now
+- Caregiving demand is rising as the population ages.
+- Medicaid look‑back compliance is a recurring pain point.
+- Families need an affordable, purpose‑built tool rather than generic expense apps.
+
+## Target Customers
+- **Primary B2C:** “Chief Family Officer” (often the local or eldest sibling managing day‑to‑day care).
+- **Secondary B2B:** Elder‑law attorneys and Medicaid planners who need structured, audit‑ready records.
+
+## Differentiation
+- Elder‑care specific workflows (sweat‑equity tracking, Medicaid‑focused reporting).
+- Integrated document vault and audit trail.
+- AI‑assisted data capture (receipt parsing, voice entry, ledger insights).
+- Local‑first experience designed for caregivers with inconsistent connectivity.
+
+## Business Model (Initial)
+- **Free tier:** local tracking + exports to drive adoption and testimonials.
+- **SaaS tiers:** cloud sync, storage, and higher AI usage limits.
+- **One‑time report:** Medicaid audit report add‑on.
+- **B2B partner plan:** attorney programs with per‑client or flat pricing.
+
+## Traction & Proof Points (Near‑Term)
+- Phase‑1 goal: validate activation (5 entries in 14 days) and retention.
+- Pilot program with 3–5 elder‑law attorneys to quantify time savings per case.
+
+## Key Risks & Mitigation
+- **Security claims:** Avoid HIPAA‑style language until controls and audits are complete.
+- **Feature expectations:** Public claims should reflect verified capabilities only.
+- **Go‑to‑market focus:** Start with caregiver activation and attorney pilots before scaling.
+
+## 90‑Day Objectives
+1. Validate onboarding to 5‑entry activation in 14 days.
+2. Establish 3 attorney pilot partners with case‑study data.
+3. Launch pricing tests for the Essentials tier and Audit Defense report.
+4. Publish a concise landing page and legal policies aligned with current capabilities.
+
+## Ask (Partners/Investors)
+- Introductions to elder‑law firms and caregiver communities.
+- Feedback on pricing and pilot design.
+- Support for security hardening prior to public release.

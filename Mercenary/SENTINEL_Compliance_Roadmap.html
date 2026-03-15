@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>SENTINEL Compliance Roadmap — Zero Budget</title>
+<style>
+  body { font-family: Arial, Helvetica, sans-serif; max-width: 960px; margin: 0 auto; padding: 30px; background: #f5f5f5; color: #2c3e50; }
+  h1 { color: #2c3e50; border-bottom: 3px solid #2c3e50; padding-bottom: 10px; }
+  h2 { color: #34495e; margin-top: 40px; border-bottom: 1px solid #bdc3c7; padding-bottom: 6px; }
+  h3 { color: #2980b9; margin-top: 25px; }
+  .card { background: #fff; border-radius: 8px; padding: 20px 25px; margin: 15px 0; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+  .tag { display: inline-block; padding: 3px 10px; border-radius: 3px; font-size: 12px; font-weight: bold; margin-right: 6px; }
+  .tag-code { background: #8e44ad; color: #fff; }
+  .tag-docs { background: #2980b9; color: #fff; }
+  .tag-free { background: #27ae60; color: #fff; }
+  .tag-tool { background: #d35400; color: #fff; }
+  .tag-outreach { background: #2c3e50; color: #fff; }
+  table { width: 100%; border-collapse: collapse; margin: 15px 0; }
+  th { background: #34495e; color: #fff; padding: 10px 12px; text-align: left; font-size: 13px; }
+  td { padding: 10px 12px; border-bottom: 1px solid #eee; font-size: 13px; vertical-align: top; }
+  tr:hover { background: #f9f9f9; }
+  .note { background: #fef9e7; border-left: 4px solid #f39c12; padding: 12px 16px; margin: 15px 0; font-size: 13px; }
+  .code-note { background: #f4ecf7; border-left: 4px solid #8e44ad; padding: 12px 16px; margin: 15px 0; font-size: 13px; }
+  ul { line-height: 1.8; }
+  ol { line-height: 1.8; }
+  .phase-header { background: #2c3e50; color: #fff; padding: 12px 20px; border-radius: 6px; margin-top: 30px; }
+  .phase-header h3 { color: #fff; margin: 0; }
+  .phase-header p { color: #bdc3c7; margin: 4px 0 0; font-size: 13px; }
+  .checklist li { list-style: none; padding-left: 5px; }
+  .checklist li::before { content: "\2610"; margin-right: 8px; font-size: 16px; }
+  .footer { text-align: center; color: #999; font-size: 11px; margin-top: 50px; padding-top: 20px; border-top: 1px solid #ddd; }
+</style>
+</head>
+<body>
+
+<h1>SENTINEL Compliance Roadmap</h1>
+<p style="color:#666;">Zero-budget path to production compliance | 2026-03-02 | Confidential</p>
+
+<div class="card">
+  <h3 style="margin-top:0;">Guiding Principle</h3>
+  <p>SENTINEL already has the <em>technical</em> compliance — air-gap, PII redaction, STIG audit logging, CAC/PIV, sector isolation, encryption. That's the hard part. What's missing is <strong>documentation, configuration hardening, and a few code changes</strong> to formalize what you've already built. Everything below is $0 out of pocket.</p>
+</div>
+
+<!-- ============================================================ -->
+<h2>Coding Tasks You Can Start Now</h2>
+
+<p>These are concrete engineering tasks that move the compliance needle before any paperwork:</p>
+
+<div class="card">
+  <table>
+    <tr>
+      <th>Task</th>
+      <th>What to Do</th>
+      <th>Compliance It Unlocks</th>
+      <th>Effort</th>
+    </tr>
+    <tr>
+      <td><strong>FIPS 140 Crypto Provider</strong></td>
+      <td>
+        Replace default JCE with BouncyCastle FIPS provider. Add <code>bcprov-fips</code> and <code>bc-fips</code> to Gradle dependencies. Configure <code>Security.insertProviderAt(new BouncyCastleFipsProvider(), 1)</code> at startup. Add <code>-Dorg.bouncycastle.fips.approved_only=true</code> JVM flag. Ensure all TLS, hashing, and encryption operations go through FIPS-validated codepaths.
+      </td>
+      <td>FIPS 140-2/3 (required for ALL federal deployments)</td>
+      <td>1-2 days</td>
+    </tr>
+    <tr>
+      <td><strong>FIPS Mode Configuration Flag</strong></td>
+      <td>
+        Add <code>sentinel.security.fips-mode=true/false</code> property. When enabled: enforce FIPS provider, reject non-FIPS algorithms, log FIPS mode in startup banner. Wire into existing <code>application.yaml</code> profile system (<code>govcloud</code> profile enables by default).
+      </td>
+      <td>FIPS 140, FedRAMP, STIG</td>
+      <td>0.5 days</td>
+    </tr>
+    <tr>
+      <td><strong>Session Timeout Enforcement</strong></td>
+      <td>
+        STIG requires idle session timeout (typically 15 minutes for classified, 30 for unclassified). Add configurable <code>sentinel.security.session-timeout-minutes</code> property. Enforce in Spring Security session management. Add re-authentication prompt in frontend.
+      </td>
+      <td>STIG (SRG-APP-000295), FedRAMP AC-12</td>
+      <td>1 day</td>
+    </tr>
+    <tr>
+      <td><strong>Failed Login Lockout</strong></td>
+      <td>
+        You have <code>LoginAttemptService</code> already. Verify it enforces: max 3 consecutive failures, 30-minute lockout, lockout logged to audit trail. Add admin unlock endpoint. Configurable via properties.
+      </td>
+      <td>STIG (SRG-APP-000065), FedRAMP AC-7</td>
+      <td>0.5 days (verify + harden existing code)</td>
+    </tr>
+    <tr>
+      <td><strong>Password Complexity Enforcement</strong></td>
+      <td>
+        For STANDARD auth mode: enforce minimum 15 characters, mixed case, numbers, special characters, no password reuse (last 24). Store password history hashes. Add validation in <code>StandardAuthenticationService</code>.
+      </td>
+      <td>STIG (SRG-APP-000166), FedRAMP IA-5</td>
+      <td>1 day</td>
+    </tr>
+    <tr>
+      <td><strong>Audit Log Integrity (HMAC Signing)</strong></td>
+      <td>
+        You have <code>IntegritySigner</code>. Extend it to sign each audit log entry with HMAC-SHA256. Store signature alongside log entry in MongoDB. Add verification endpoint for audit log tamper detection. This proves logs haven't been altered.
+      </td>
+      <td>STIG (SRG-APP-000515), FedRAMP AU-10</td>
+      <td>1-2 days</td>
+    </tr>
+    <tr>
+      <td><strong>Banner / Legal Notice on Login</strong></td>
+      <td>
+        Government systems must display a DoD consent banner before login. Add configurable <code>sentinel.security.login-banner</code> property. Render banner on login page. User must acknowledge before proceeding. Standard DoD banner text is publicly available.
+      </td>
+      <td>STIG (SRG-APP-000068), FedRAMP AC-8</td>
+      <td>0.5 days</td>
+    </tr>
+    <tr>
+      <td><strong>TLS 1.2+ Enforcement</strong></td>
+      <td>
+        Verify and enforce TLS 1.2 minimum in Spring Boot embedded Tomcat config. Disable TLS 1.0, 1.1, SSLv3. Restrict cipher suites to FIPS-approved set. Add <code>server.ssl.enabled-protocols=TLSv1.2,TLSv1.3</code> and explicit cipher list.
+      </td>
+      <td>STIG (SRG-APP-000014), FIPS 140, FedRAMP SC-8</td>
+      <td>0.5 days</td>
+    </tr>
+    <tr>
+      <td><strong>Encryption at Rest Documentation + Verification</strong></td>
+      <td>
+        MongoDB supports encryption at rest (WiredTiger + KMIP or local keyfile). Add a startup health check that verifies MongoDB encryption is enabled. Log warning if not. Add deployment guide section.
+      </td>
+      <td>HIPAA (164.312(a)(2)(iv)), FedRAMP SC-28, STIG</td>
+      <td>0.5 days</td>
+    </tr>
+    <tr>
+      <td><strong>SBOM Generation in CI</strong></td>
+      <td>
+        Add CycloneDX Gradle plugin to generate Software Bill of Materials on every build. Output SBOM to <code>build/reports/sbom/</code>. Iron Bank requires SBOM for every container image.
+      </td>
+      <td>Iron Bank, Executive Order 14028, FedRAMP</td>
+      <td>0.5 days</td>
+    </tr>
+    <tr>
+      <td><strong>Container Hardening (Iron Bank Prep)</strong></td>
+      <td>
+        Create a hardened Dockerfile based on <code>registry1.dso.mil/ironbank/redhat/ubi/ubi9-minimal</code> (or Chainguard). Non-root user, no shell, minimal packages, health check endpoint, read-only filesystem where possible.
+      </td>
+      <td>Iron Bank, STIG (container hardening guide)</td>
+      <td>1-2 days</td>
+    </tr>
+  </table>
+</div>
+
+<div class="code-note">
+  <strong>Total coding effort: ~8-10 days.</strong> All of these are concrete PRs you can write today. The FIPS provider swap and SBOM generation are the highest-impact items — they're hard requirements that block federal deployment, and they're purely engineering tasks with no cost.
+</div>
+
+<!-- ============================================================ -->
+<h2>Phased Roadmap</h2>
+
+<!-- Phase 1 -->
+<div class="phase-header">
+  <h3>Phase 1: Code Hardening (Weeks 1-2)</h3>
+  <p>Engineering work that costs nothing but your time</p>
+</div>
+
+<div class="card">
+  <span class="tag tag-code">CODE</span>
+  <span class="tag tag-free">$0</span>
+
+  <ul class="checklist">
+    <li>Integrate BouncyCastle FIPS provider + FIPS mode flag</li>
+    <li>Enforce TLS 1.2+ with FIPS-approved cipher suites</li>
+    <li>Verify/harden failed login lockout (LoginAttemptService)</li>
+    <li>Add password complexity enforcement for STANDARD auth</li>
+    <li>Add configurable session timeout with re-auth prompt</li>
+    <li>Add DoD consent banner (configurable login banner)</li>
+    <li>Extend IntegritySigner to HMAC-sign all audit log entries</li>
+    <li>Add MongoDB encryption-at-rest health check</li>
+    <li>Add CycloneDX SBOM generation to Gradle build</li>
+    <li>Create hardened Dockerfile (non-root, minimal base image)</li>
+  </ul>
+
+  <p><strong>Outcome:</strong> SENTINEL can truthfully claim FIPS 140-validated cryptography, STIG-aligned session management, and Iron Bank-ready container packaging.</p>
+</div>
+
+<!-- Phase 2 -->
+<div class="phase-header">
+  <h3>Phase 2: STIG Self-Assessment (Week 3)</h3>
+  <p>Free tooling, documentation output</p>
+</div>
+
+<div class="card">
+  <span class="tag tag-tool">TOOL</span>
+  <span class="tag tag-docs">DOCS</span>
+  <span class="tag tag-free">$0</span>
+
+  <ol>
+    <li>Download DISA STIG Viewer from <strong>public.cyber.mil</strong> (free, no account needed)</li>
+    <li>Download the <strong>Application Security and Development STIG</strong> (the one that applies to web apps)</li>
+    <li>Walk through every finding (there are ~280 checks):
+      <ul>
+        <li>Mark each as <strong>Not a Finding</strong> (compliant), <strong>Open</strong> (gap), or <strong>Not Applicable</strong></li>
+        <li>For each "Not a Finding," document where in SENTINEL's code the control is implemented</li>
+        <li>For each "Open," decide: fix in code (add to Phase 1 backlog) or document as accepted risk</li>
+      </ul>
+    </li>
+    <li>Export the completed checklist as <code>.ckl</code> file — this is the standard format Iron Bank expects</li>
+    <li>Store in repo at <code>docs/compliance/stig-assessment.ckl</code></li>
+  </ol>
+
+  <p><strong>Outcome:</strong> A formal STIG self-assessment artifact you can hand to any government evaluator.</p>
+</div>
+
+<!-- Phase 3 -->
+<div class="phase-header">
+  <h3>Phase 3: HIPAA Documentation (Week 4)</h3>
+  <p>All documentation, no cost</p>
+</div>
+
+<div class="card">
+  <span class="tag tag-docs">DOCS</span>
+  <span class="tag tag-free">$0</span>
+
+  <p>There is no "HIPAA certification." You self-attest by having these documents ready. HHS publishes the exact requirements at <strong>hhs.gov/hipaa</strong>.</p>
+
+  <ol>
+    <li><strong>Privacy Policy</strong> — How SENTINEL handles PHI. Since it's self-hosted, the customer controls their data. Your policy documents what SENTINEL does and doesn't do with data at the application layer.</li>
+    <li><strong>Security Policy</strong> — Technical safeguards: encryption (at rest + transit), access controls (RBAC, sector isolation), audit logging, PII redaction, session management.</li>
+    <li><strong>Risk Assessment</strong> — Walk through the HIPAA Security Rule's 54 implementation specifications. For each, document how SENTINEL addresses it or marks it as customer responsibility (deployment-level control).</li>
+    <li><strong>Breach Notification Plan</strong> — Template for what happens if a breach occurs. Since SENTINEL is self-hosted, most of this is the customer's responsibility, but document what SENTINEL provides (audit trails, anomaly detection).</li>
+    <li><strong>Business Associate Agreement (BAA) Template</strong> — Standard legal template. Free templates available from HHS and NIST. Customize with SENTINEL-specific terms.</li>
+  </ol>
+
+  <p>Store all documents in <code>docs/compliance/hipaa/</code>.</p>
+
+  <p><strong>Outcome:</strong> Complete HIPAA compliance package. Medical edition customers can sign a BAA and deploy with confidence.</p>
+</div>
+
+<!-- Phase 4 -->
+<div class="phase-header">
+  <h3>Phase 4: SOC2 Readiness Narrative (Week 5)</h3>
+  <p>Self-documented controls mapped to Trust Service Criteria</p>
+</div>
+
+<div class="card">
+  <span class="tag tag-docs">DOCS</span>
+  <span class="tag tag-free">$0</span>
+
+  <p>A formal SOC2 Type II report requires a paid auditor. But a <strong>SOC2 Readiness Document</strong> is free to produce and is accepted by many enterprise buyers in early-stage conversations.</p>
+
+  <ol>
+    <li>Create a spreadsheet or document mapping SENTINEL's controls to the <strong>5 Trust Service Criteria</strong>:
+      <ul>
+        <li><strong>Security</strong> — authentication, authorization, encryption, firewall rules, vulnerability management</li>
+        <li><strong>Availability</strong> — uptime, disaster recovery, backup (customer-managed for self-hosted)</li>
+        <li><strong>Processing Integrity</strong> — data accuracy, PII redaction validation, audit trails</li>
+        <li><strong>Confidentiality</strong> — sector isolation, access controls, encryption, data classification</li>
+        <li><strong>Privacy</strong> — PII handling, redaction, retention policies</li>
+      </ul>
+    </li>
+    <li>For each criterion, list the specific SENTINEL feature and code path that implements it</li>
+    <li>Produce a customer-facing PDF: "SENTINEL Security & Compliance Posture"</li>
+  </ol>
+
+  <p><strong>Outcome:</strong> A document you can hand to any enterprise buyer asking "Do you have SOC2?" that demonstrates you take security seriously and have the controls in place. Graduate to a formal audit when revenue justifies it.</p>
+</div>
+
+<!-- Phase 5 -->
+<div class="phase-header">
+  <h3>Phase 5: Go-to-Market Compliance Page (Week 5-6)</h3>
+  <p>Public-facing trust signal</p>
+</div>
+
+<div class="card">
+  <span class="tag tag-docs">DOCS</span>
+  <span class="tag tag-code">CODE</span>
+  <span class="tag tag-free">$0</span>
+
+  <ol>
+    <li>Add a <strong>/security</strong> or <strong>/compliance</strong> page to SENTINEL's website/docs listing:
+      <ul>
+        <li>FIPS 140-validated cryptography</li>
+        <li>STIG-aligned security controls (with CKL available on request)</li>
+        <li>HIPAA-ready with BAA available</li>
+        <li>SOC2 controls documented (formal audit in progress / planned)</li>
+        <li>Air-gap deployment capable</li>
+        <li>CAC/PIV authentication (government edition)</li>
+        <li>Clearance-level sector isolation</li>
+        <li>PII detection and redaction</li>
+        <li>SBOM generated on every build</li>
+      </ul>
+    </li>
+    <li>Add "Security" link to main navigation</li>
+  </ol>
+
+  <p><strong>Outcome:</strong> Buyers and evaluators can see your compliance posture before even contacting you. This is what enterprise/gov procurement teams look for first.</p>
+</div>
+
+<!-- Phase 6 -->
+<div class="phase-header">
+  <h3>Phase 6: Outreach (Week 6+)</h3>
+  <p>Revenue-generating activities that cost nothing</p>
+</div>
+
+<div class="card">
+  <span class="tag tag-outreach">OUTREACH</span>
+  <span class="tag tag-free">$0</span>
+
+  <ol>
+    <li><strong>Carahsoft</strong> — Email their ISV partnerships team. Pitch: "Self-hosted RAG platform with air-gap deployment, CAC/PIV, STIG audit logging. No competing product in your portfolio." They take a rev share, not upfront fees.</li>
+    <li><strong>Platform One / Iron Bank</strong> — Join the Platform One community at <strong>p1.dso.mil</strong>. Submit a "Party Bus" request to get your container into Iron Bank. Having the hardened Dockerfile and SBOM from Phase 1 gets you in the queue.</li>
+    <li><strong>AWS Marketplace</strong> — APN registration is free. Start packaging an AMI. List with BYOL (Bring Your Own License) pricing model — zero cost to list.</li>
+    <li><strong>Find a pilot customer</strong> — One government user running SENTINEL on their network, even unfunded, is worth more than every compliance document combined. Check LinkedIn for government innovation labs, CDOs (Chief Data Officers), and AI/ML program managers.</li>
+  </ol>
+</div>
+
+<!-- ============================================================ -->
+<h2>Summary Timeline</h2>
+
+<div class="card">
+  <table>
+    <tr><th>Week</th><th>Activity</th><th>Type</th><th>Output</th></tr>
+    <tr>
+      <td>1-2</td>
+      <td>Code hardening (FIPS, session mgmt, SBOM, container)</td>
+      <td><span class="tag tag-code">CODE</span></td>
+      <td>10 PRs merged, FIPS-validated builds</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>STIG self-assessment</td>
+      <td><span class="tag tag-tool">TOOL</span></td>
+      <td><code>stig-assessment.ckl</code> artifact</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>HIPAA documentation package</td>
+      <td><span class="tag tag-docs">DOCS</span></td>
+      <td>5 policy documents + BAA template</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>SOC2 readiness narrative + compliance page</td>
+      <td><span class="tag tag-docs">DOCS</span></td>
+      <td>Customer-facing security posture PDF</td>
+    </tr>
+    <tr>
+      <td>6+</td>
+      <td>Carahsoft, Iron Bank, AWS Marketplace outreach</td>
+      <td><span class="tag tag-outreach">OUTREACH</span></td>
+      <td>Partnership agreements, marketplace listing</td>
+    </tr>
+  </table>
+</div>
+
+<div class="note">
+  <strong>Bottom line:</strong> Six weeks of focused work — roughly half coding, half documentation — and SENTINEL goes from "has compliance features" to "has a compliance package that government and enterprise buyers can evaluate." Total cost: $0. The formal certifications (SOC2 audit, FedRAMP ATO) come later, funded by the revenue these documents help you earn.
+</div>
+
+<div class="footer">
+  SENTINEL Compliance Roadmap | Zero Budget | Confidential | 2026-03-02
+</div>
+
+</body>
+</html>

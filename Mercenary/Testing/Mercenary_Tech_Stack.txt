@@ -1,0 +1,75 @@
+MERCENARY / SENTINEL - Technology Stack
+Source snapshot: d:\Projects\mercenary
+Generated: 2026-02-12
+
+1) Core Application
+- Language: Java 21
+- Build tool: Gradle (wrapper)
+- Framework: Spring Boot 3.4.2
+- Dependency management: io.spring.dependency-management 1.1.7
+- Packaging: Edition-specific boot JARs (trial, enterprise, medical, government)
+
+2) Backend Framework Modules
+- spring-boot-starter-web
+- spring-boot-starter-data-mongodb
+- spring-boot-starter-security
+- spring-boot-starter-validation
+- spring-boot-starter-thymeleaf
+
+3) AI / RAG Stack
+- Spring AI 1.0.0-M4
+  - Ollama starter (local models)
+  - OpenAI starter (foundation mode)
+  - Anthropic starter (foundation mode)
+  - Vertex AI Gemini starter (foundation mode)
+  - MongoDB Atlas vector store starter
+  - PDF document reader
+- Local LLM runtime: Ollama (docker image ollama/ollama:0.5.4)
+
+4) Data, Storage, and Retrieval
+- Database: MongoDB 7.x (docker image mongo:7.0)
+- Vector store: Spring AI + MongoDB-backed vector storage
+- Caching: Caffeine 3.1.8
+- Query/routing architecture: AdaptiveRAG + HybridRAG + CRAG + RAGPart + other feature-flagged engines
+
+5) Document and Content Processing
+- Apache Tika 2.9.1 (file type/content extraction)
+- Tabula 1.0.5 (table extraction for PDFs)
+- Spring AI PDF reader
+- Optional OCR sidecar service (Python): FastAPI + Uvicorn + Torch + Pillow + pypdfium2 + transformers
+
+6) Security and Access
+- Spring Security
+- Auth modes supported in project: DEV, STANDARD, OIDC, CAC
+- OIDC/JWT validation library: nimbus-jose-jwt 9.37.3
+- Rate limiting: Bucket4j 8.7.0
+- License/signing and security controls integrated in app modules
+
+7) Frontend / UI
+- Server-hosted static web app (HTML/CSS/JavaScript)
+- Templating support: Thymeleaf on backend
+- Visualization libraries bundled locally:
+  - D3.js v7
+  - force-graph
+
+8) API and Docs
+- OpenAPI/Swagger UI: springdoc-openapi-starter-webmvc-ui 2.3.0
+- Internal docs served from docs/ and static manual assets
+
+9) Testing and Quality
+- JUnit platform via spring-boot-starter-test
+- spring-security-test
+- JaCoCo for test coverage
+- SonarQube/SonarCloud plugin in Gradle (org.sonarqube 5.1.0.4882)
+- UI automation tooling: Playwright (^1.58.0) under tools/playwright-runner
+
+10) DevOps / Deployment
+- Docker multi-stage build (Temurin 21 JDK -> Temurin 21 JRE Alpine)
+- Docker Compose for dev and prod profiles
+- Non-root container runtime user (sentinel)
+- Health checks for app and dependencies
+- Resource limits and hardened options in production compose
+
+11) Cloud/Integration Libraries
+- AWS SDK v2 (KMS and S3 modules)
+

@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>SENTINEL Marketplace Breakdown</title>
+<style>
+  body { font-family: Arial, Helvetica, sans-serif; max-width: 960px; margin: 0 auto; padding: 30px; background: #f5f5f5; color: #2c3e50; }
+  h1 { color: #2c3e50; border-bottom: 3px solid #2c3e50; padding-bottom: 10px; }
+  h2 { color: #34495e; margin-top: 40px; border-bottom: 1px solid #bdc3c7; padding-bottom: 6px; }
+  h3 { color: #2980b9; margin-top: 25px; }
+  .card { background: #fff; border-radius: 8px; padding: 20px 25px; margin: 15px 0; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+  .tag { display: inline-block; padding: 3px 10px; border-radius: 3px; font-size: 12px; font-weight: bold; margin-right: 6px; }
+  .tag-enterprise { background: #3498db; color: #fff; }
+  .tag-government { background: #2c3e50; color: #fff; }
+  .tag-medical { background: #27ae60; color: #fff; }
+  .tag-priority { background: #e74c3c; color: #fff; }
+  .tag-medium { background: #f39c12; color: #fff; }
+  .tag-low { background: #95a5a6; color: #fff; }
+  table { width: 100%; border-collapse: collapse; margin: 15px 0; }
+  th { background: #34495e; color: #fff; padding: 10px 12px; text-align: left; font-size: 13px; }
+  td { padding: 10px 12px; border-bottom: 1px solid #eee; font-size: 13px; }
+  tr:hover { background: #f9f9f9; }
+  .pro { color: #27ae60; }
+  .con { color: #e74c3c; }
+  .note { background: #fef9e7; border-left: 4px solid #f39c12; padding: 12px 16px; margin: 15px 0; font-size: 13px; }
+  .timeline-item { display: flex; margin: 10px 0; }
+  .timeline-phase { flex: 0 0 120px; font-weight: bold; color: #2980b9; }
+  .timeline-desc { flex: 1; }
+  ul { line-height: 1.8; }
+  .footer { text-align: center; color: #999; font-size: 11px; margin-top: 50px; padding-top: 20px; border-top: 1px solid #ddd; }
+</style>
+</head>
+<body>
+
+<h1>SENTINEL — Marketplace Listing Strategy</h1>
+<p style="color:#666;">Prepared 2026-03-02 | Confidential</p>
+
+<div class="card">
+  <h3 style="margin-top:0;">Executive Summary</h3>
+  <p>SENTINEL has three editions (Enterprise, Medical, Government) targeting three distinct buyer personas across different procurement channels. This document breaks down every relevant marketplace, what's required to list, associated costs, expected timeline, and a recommended sequencing strategy.</p>
+  <p>The fastest path to revenue is <strong>AWS Marketplace</strong> (Enterprise edition) — 2-4 weeks to list, zero upfront cost, instant access to enterprise buyers with existing AWS billing. The highest-value path is <strong>Iron Bank + GSA Schedule</strong> (Government edition) — 6-18 months but unlocks DoD/federal contracts worth 10-100x commercial deals.</p>
+</div>
+
+<!-- ============================================================ -->
+<h2>1. Cloud Marketplaces</h2>
+
+<!-- AWS Marketplace -->
+<div class="card">
+  <h3 style="margin-top:0;">AWS Marketplace</h3>
+  <span class="tag tag-enterprise">Enterprise</span>
+  <span class="tag tag-government">Government</span>
+  <span class="tag tag-medical">Medical</span>
+  <span class="tag tag-priority">HIGH PRIORITY</span>
+
+  <p>The dominant enterprise software marketplace. 310,000+ active customers. Supports multiple delivery models and has dedicated GovCloud and HIPAA-eligible listing categories.</p>
+
+  <h4>Delivery Models</h4>
+  <table>
+    <tr><th>Model</th><th>Best For</th><th>SENTINEL Fit</th></tr>
+    <tr>
+      <td><strong>AMI (Amazon Machine Image)</strong></td>
+      <td>Self-contained appliance deployments</td>
+      <td class="pro">Excellent — single VM with MongoDB + Ollama + SENTINEL baked in. Matches air-gap story.</td>
+    </tr>
+    <tr>
+      <td><strong>Container (ECS/EKS)</strong></td>
+      <td>Kubernetes-native orgs</td>
+      <td class="pro">Good — Docker Compose already exists. Helm chart needed for EKS.</td>
+    </tr>
+    <tr>
+      <td><strong>SaaS</strong></td>
+      <td>Managed service with usage metering</td>
+      <td class="con">Not applicable yet — SENTINEL is self-hosted.</td>
+    </tr>
+    <tr>
+      <td><strong>Professional Services</strong></td>
+      <td>Consulting/implementation</td>
+      <td>Future option for deployment assistance.</td>
+    </tr>
+  </table>
+
+  <h4>Listing Requirements</h4>
+  <ul>
+    <li>AWS Partner Network (APN) membership (free tier available)</li>
+    <li>Product packaged as AMI or container image in ECR</li>
+    <li>EULA or Standard Contract for AWS Marketplace (SCMP)</li>
+    <li>Pricing model defined (hourly, annual, BYOL, or contract)</li>
+    <li>Product logo (120x120, 220x220), description, usage instructions</li>
+    <li>Technical validation by AWS team (automated + manual review)</li>
+  </ul>
+
+  <h4>Costs</h4>
+  <ul>
+    <li><strong>Listing fee:</strong> None</li>
+    <li><strong>Revenue share:</strong> 3% for public offers, negotiable for private offers and ISV Accelerate deals</li>
+    <li><strong>Infrastructure:</strong> Customer pays their own EC2/EKS costs</li>
+  </ul>
+
+  <h4>GovCloud Listing (Government Edition)</h4>
+  <ul>
+    <li>Requires separate listing in AWS GovCloud (US) regions</li>
+    <li>Must meet FedRAMP or equivalent compliance posture</li>
+    <li>ITAR and EAR-compliant data handling</li>
+    <li>Separate AMI build targeting GovCloud AMI catalog</li>
+  </ul>
+
+  <h4>HIPAA-Eligible Listing (Medical Edition)</h4>
+  <ul>
+    <li>Must sign AWS Business Associate Agreement (BAA)</li>
+    <li>Product must be listed as "HIPAA Eligible" category</li>
+    <li>Documentation of PHI handling, encryption at rest/transit</li>
+  </ul>
+
+  <h4>Timeline</h4>
+  <ul>
+    <li>APN registration: 1-2 days</li>
+    <li>AMI/container packaging: 1-2 weeks</li>
+    <li>AWS review and approval: 1-2 weeks</li>
+    <li><strong>Total: 2-4 weeks (commercial), 4-8 weeks (GovCloud)</strong></li>
+  </ul>
+
+  <h4>Pros / Cons</h4>
+  <ul>
+    <li class="pro">+ Instant access to 310k+ enterprise buyers</li>
+    <li class="pro">+ Customers buy with existing AWS billing (no procurement friction)</li>
+    <li class="pro">+ Private offers for large deals (custom pricing, terms)</li>
+    <li class="pro">+ ISV Accelerate program — AWS sales team co-sells your product</li>
+    <li class="pro">+ GovCloud path for government edition</li>
+    <li class="con">- 3% revenue share on every transaction</li>
+    <li class="con">- AMI packaging requires baking Ollama + MongoDB into image</li>
+    <li class="con">- Customer reviews are public (need quality control before listing)</li>
+  </ul>
+</div>
+
+<!-- Azure Marketplace -->
+<div class="card">
+  <h3 style="margin-top:0;">Azure Marketplace</h3>
+  <span class="tag tag-enterprise">Enterprise</span>
+  <span class="tag tag-government">Government</span>
+  <span class="tag tag-medium">MEDIUM PRIORITY</span>
+
+  <p>Microsoft's marketplace. Critical for organizations already invested in Azure, especially Azure Government (IL4/IL5) for DoD workloads.</p>
+
+  <h4>Delivery Models</h4>
+  <table>
+    <tr><th>Model</th><th>SENTINEL Fit</th></tr>
+    <tr>
+      <td><strong>Azure VM Image</strong></td>
+      <td class="pro">Direct equivalent of AWS AMI. Same packaging approach.</td>
+    </tr>
+    <tr>
+      <td><strong>Azure Container Offer</strong></td>
+      <td class="pro">Deploy to AKS. Helm chart needed.</td>
+    </tr>
+    <tr>
+      <td><strong>Azure Application (Solution Template)</strong></td>
+      <td class="pro">ARM template deploying VM + CosmosDB (MongoDB API) + SENTINEL. Best UX for buyers.</td>
+    </tr>
+  </table>
+
+  <h4>Listing Requirements</h4>
+  <ul>
+    <li>Microsoft Partner Network (MPN) membership</li>
+    <li>Partner Center account (replaces old Cloud Partner Portal)</li>
+    <li>VM image in Azure Shared Image Gallery or VHD in blob storage</li>
+    <li>ARM template or Helm chart for solution templates</li>
+    <li>Microsoft standard contract or custom EULA</li>
+    <li>Technical validation + security scan by Microsoft</li>
+  </ul>
+
+  <h4>Costs</h4>
+  <ul>
+    <li><strong>Listing fee:</strong> None</li>
+    <li><strong>Revenue share:</strong> 3% (same as AWS)</li>
+    <li><strong>MACC eligible:</strong> Customers can burn Azure committed spend on your product</li>
+  </ul>
+
+  <h4>Azure Government</h4>
+  <ul>
+    <li>Separate listing in Azure Government regions</li>
+    <li>IL4/IL5 compliance for DoD workloads</li>
+    <li>FedRAMP High authorization strongly preferred</li>
+    <li>SENTINEL's air-gap + CAC/PIV story aligns perfectly with Azure Gov buyers</li>
+  </ul>
+
+  <h4>Timeline</h4>
+  <ul>
+    <li><strong>Total: 3-6 weeks (commercial), 6-12 weeks (Azure Gov)</strong></li>
+  </ul>
+
+  <h4>Pros / Cons</h4>
+  <ul>
+    <li class="pro">+ MACC burn-down — enterprises can use committed Azure spend</li>
+    <li class="pro">+ Azure Gov is the #1 cloud for DoD IL4/IL5 workloads</li>
+    <li class="pro">+ CosmosDB (MongoDB API) means SENTINEL works natively on Azure</li>
+    <li class="pro">+ Microsoft co-sell program (similar to AWS ISV Accelerate)</li>
+    <li class="con">- Partner Center onboarding is clunky</li>
+    <li class="con">- Smaller marketplace audience than AWS</li>
+  </ul>
+</div>
+
+<!-- GCP Marketplace -->
+<div class="card">
+  <h3 style="margin-top:0;">Google Cloud Marketplace</h3>
+  <span class="tag tag-enterprise">Enterprise</span>
+  <span class="tag tag-low">LOW PRIORITY</span>
+
+  <p>Smallest of the big three. Relevant if targeting GCP-native orgs. Less government presence than AWS/Azure.</p>
+
+  <h4>Key Details</h4>
+  <ul>
+    <li><strong>Delivery:</strong> GCE VM image or GKE container</li>
+    <li><strong>Revenue share:</strong> 3%</li>
+    <li><strong>Timeline:</strong> 3-6 weeks</li>
+    <li><strong>Gov:</strong> Google Distributed Cloud (GDC) for air-gap, but much smaller market</li>
+  </ul>
+
+  <h4>Recommendation</h4>
+  <p>List after AWS and Azure are live. Lower priority unless you have specific GCP customer demand.</p>
+</div>
+
+<!-- ============================================================ -->
+<h2>2. Government / Defense Channels</h2>
+
+<!-- Iron Bank -->
+<div class="card">
+  <h3 style="margin-top:0;">Iron Bank (Platform One / DoD)</h3>
+  <span class="tag tag-government">Government</span>
+  <span class="tag tag-priority">HIGH PRIORITY</span>
+
+  <p>The DoD's hardened container registry. Every container image running on DoD networks must come from Iron Bank. This is <em>the</em> gateway to defense contracts. Managed by the Air Force's Platform One team.</p>
+
+  <h4>What It Is</h4>
+  <ul>
+    <li>Centralized, hardened container image registry for all DoD</li>
+    <li>Images scanned and hardened against DISA STIGs</li>
+    <li>Hosted at <code>registry1.dso.mil</code></li>
+    <li>Part of the Big Bang ecosystem (DoD DevSecOps reference architecture)</li>
+  </ul>
+
+  <h4>Listing Requirements</h4>
+  <ul>
+    <li>Containerized application (Dockerfile based on Iron Bank base images — typically UBI or Chainguard)</li>
+    <li>STIG compliance for the container and all dependencies</li>
+    <li>No CVEs above a defined severity threshold (typically no Critical, minimal High)</li>
+    <li>Software Bill of Materials (SBOM) — CycloneDX or SPDX format</li>
+    <li>Justifications for any remaining findings</li>
+    <li>CI/CD pipeline integrated with Platform One's pipeline (GitLab-based)</li>
+    <li>Sponsor: typically need a DoD program office requesting your software</li>
+  </ul>
+
+  <h4>Process</h4>
+  <ol>
+    <li>Identify a DoD program sponsor (a unit/agency that wants SENTINEL)</li>
+    <li>Submit container image + Dockerfile + hardening manifest to Iron Bank</li>
+    <li>Platform One team scans, reviews, and hardens the image</li>
+    <li>Iterative remediation of findings (CVEs, STIG violations)</li>
+    <li>Image approved and published to <code>registry1.dso.mil</code></li>
+    <li>DoD customers can now pull and deploy on any DoD network</li>
+  </ol>
+
+  <h4>Costs</h4>
+  <ul>
+    <li><strong>Listing fee:</strong> None (taxpayer-funded)</li>
+    <li><strong>Revenue share:</strong> None</li>
+    <li><strong>Actual cost:</strong> Engineering time for hardening + STIG compliance (significant)</li>
+  </ul>
+
+  <h4>Timeline</h4>
+  <ul>
+    <li>Initial submission to approval: 3-6 months (with sponsor)</li>
+    <li>Without existing sponsor: 6-12 months (need to find one first)</li>
+    <li>Ongoing: re-certification on every release</li>
+  </ul>
+
+  <h4>Why This Matters for SENTINEL</h4>
+  <ul>
+    <li class="pro">+ SENTINEL's government edition (CAC/PIV, STIG audit logging, air-gap, sector isolation) is <em>built</em> for this</li>
+    <li class="pro">+ Once in Iron Bank, you're pre-approved for every DoD network</li>
+    <li class="pro">+ Massive competitive moat — most RAG platforms can't pass Iron Bank hardening</li>
+    <li class="pro">+ Zero revenue share — pure licensing deal between you and the customer</li>
+    <li class="con">- Requires DoD program sponsor</li>
+    <li class="con">- Hardening process is rigorous and time-consuming</li>
+    <li class="con">- Must rebase on Iron Bank-approved base images (e.g., no standard Docker Hub images)</li>
+  </ul>
+
+  <div class="note">
+    <strong>SENTINEL Advantage:</strong> Most competitors (LangChain, Pinecone, Weaviate, etc.) are cloud-only SaaS products that <em>cannot</em> be containerized for air-gapped DoD networks. SENTINEL's architecture (local Ollama + MongoDB + self-contained JAR) is uniquely positioned for Iron Bank. This is your deepest moat.
+  </div>
+</div>
+
+<!-- GSA Schedule -->
+<div class="card">
+  <h3 style="margin-top:0;">GSA Schedule (GSA Advantage / GSA MAS)</h3>
+  <span class="tag tag-government">Government</span>
+  <span class="tag tag-medical">Medical</span>
+  <span class="tag tag-medium">MEDIUM PRIORITY</span>
+
+  <p>The General Services Administration's Multiple Award Schedule (MAS) is the primary procurement vehicle for federal civilian agencies. If a federal agency wants to buy software, GSA Schedule is usually the path of least resistance.</p>
+
+  <h4>What It Is</h4>
+  <ul>
+    <li>Pre-negotiated contract vehicle between GSA and your company</li>
+    <li>Products/services listed on GSA Advantage (gsaadvantage.gov) — the federal "Amazon"</li>
+    <li>Covers 11 million+ products/services</li>
+    <li>Used by all federal civilian agencies + many state/local governments</li>
+  </ul>
+
+  <h4>Relevant Categories</h4>
+  <table>
+    <tr><th>SIN (Special Item Number)</th><th>Description</th><th>SENTINEL Fit</th></tr>
+    <tr>
+      <td>54151S</td>
+      <td>Information Technology Professional Services</td>
+      <td>Deployment, integration, training</td>
+    </tr>
+    <tr>
+      <td>54151ECOM</td>
+      <td>Electronic Commerce / IT Software</td>
+      <td>SENTINEL software license</td>
+    </tr>
+    <tr>
+      <td>518210C</td>
+      <td>Cloud &amp; Cloud-Related IT Services (SaaS/IaaS)</td>
+      <td>If offering managed deployment</td>
+    </tr>
+  </table>
+
+  <h4>Requirements</h4>
+  <ul>
+    <li>Company must be registered in SAM.gov (System for Award Management)</li>
+    <li>Minimum 2 years in business (can be waived in some cases)</li>
+    <li>Past performance references (2-3 contracts/projects)</li>
+    <li>Financial statements reviewed by CPA</li>
+    <li>Commercial Sales Practices (CSP) disclosure</li>
+    <li>Pricing proposal with Most Favored Customer (MFC) pricing</li>
+    <li>FedRAMP authorization for cloud offerings (FedRAMP Ready minimum)</li>
+  </ul>
+
+  <h4>Costs</h4>
+  <ul>
+    <li><strong>Application fee:</strong> None</li>
+    <li><strong>Industrial Funding Fee (IFF):</strong> 0.75% of quarterly sales through the schedule</li>
+    <li><strong>Actual cost:</strong> Significant admin overhead — proposal preparation, compliance documentation</li>
+  </ul>
+
+  <h4>Timeline</h4>
+  <ul>
+    <li>SAM.gov registration: 2-4 weeks</li>
+    <li>GSA Schedule application: 6-12 months for approval</li>
+    <li>Using a GSA Schedule consultant/partner can accelerate to 3-6 months</li>
+  </ul>
+
+  <h4>Alternative: Partner with a Schedule Holder</h4>
+  <p>Instead of getting your own GSA Schedule (long process), partner with an existing Schedule holder like <strong>Carahsoft</strong>, <strong>Immix Group</strong>, or <strong>DLT Solutions</strong>. They resell your product under their schedule. This is the fast path — can be operational in 4-8 weeks.</p>
+</div>
+
+<!-- Carahsoft -->
+<div class="card">
+  <h3 style="margin-top:0;">Carahsoft Technology</h3>
+  <span class="tag tag-government">Government</span>
+  <span class="tag tag-medical">Medical</span>
+  <span class="tag tag-priority">HIGH PRIORITY</span>
+
+  <p>The "Trusted Government IT Solutions Provider." Carahsoft is the dominant IT distributor/reseller for government. They hold GSA Schedule, NASA SEWP, ITES-SW, and dozens of other contract vehicles. They resell Palantir, Splunk, CrowdStrike, Snowflake, MongoDB, and 200+ other vendors.</p>
+
+  <h4>How It Works</h4>
+  <ol>
+    <li>You sign a distribution agreement with Carahsoft</li>
+    <li>SENTINEL gets listed under Carahsoft's contract vehicles (GSA, SEWP, etc.)</li>
+    <li>Carahsoft's 300+ government sales reps sell to agencies on your behalf</li>
+    <li>You provide technical support, Carahsoft handles procurement/billing</li>
+    <li>Revenue split: typically 70-80% to you, 20-30% to Carahsoft</li>
+  </ol>
+
+  <h4>Benefits</h4>
+  <ul>
+    <li class="pro">+ Instant access to every federal contract vehicle without getting your own</li>
+    <li class="pro">+ 300+ government-specialist sales reps selling your product</li>
+    <li class="pro">+ They handle all procurement paperwork, billing, compliance</li>
+    <li class="pro">+ Strong relationships with DoD, IC, DHS, VA, HHS</li>
+    <li class="pro">+ They already resell MongoDB (your database) — natural fit</li>
+  </ul>
+
+  <h4>Requirements</h4>
+  <ul>
+    <li>Working product (doesn't need to be GA — can be beta/pilot)</li>
+    <li>At least one government customer or proof of concept (even unfunded)</li>
+    <li>Technical documentation and deployment guide</li>
+    <li>Pricing model defined</li>
+  </ul>
+
+  <h4>Timeline</h4>
+  <ul>
+    <li>Initial contact to partnership agreement: 4-8 weeks</li>
+    <li>Listed on contract vehicles: immediate (they already hold the schedules)</li>
+  </ul>
+
+  <div class="note">
+    <strong>Recommendation:</strong> Carahsoft is the single fastest path to government revenue. They eliminate the 6-18 month GSA Schedule process entirely. Contact their ISV partnerships team as soon as you have a deployable government edition.
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<h2>3. Other Distribution Channels</h2>
+
+<!-- Red Hat Marketplace -->
+<div class="card">
+  <h3 style="margin-top:0;">Red Hat Marketplace / OpenShift</h3>
+  <span class="tag tag-enterprise">Enterprise</span>
+  <span class="tag tag-government">Government</span>
+  <span class="tag tag-low">LOW PRIORITY</span>
+
+  <p>Relevant for OpenShift-native enterprises and government agencies running Red Hat infrastructure (common in DoD). Products must be certified Kubernetes Operators.</p>
+
+  <h4>Key Details</h4>
+  <ul>
+    <li><strong>Requirements:</strong> Kubernetes Operator, Red Hat certification, container images from Red Hat registry</li>
+    <li><strong>Revenue share:</strong> Negotiated per-partner</li>
+    <li><strong>Timeline:</strong> 4-8 weeks for operator certification</li>
+    <li><strong>Best for:</strong> Orgs already on OpenShift (common in DoD, financial services)</li>
+  </ul>
+</div>
+
+<!-- NASA SEWP -->
+<div class="card">
+  <h3 style="margin-top:0;">NASA SEWP VI</h3>
+  <span class="tag tag-government">Government</span>
+  <span class="tag tag-low">LOW PRIORITY</span>
+
+  <p>NASA's Solutions for Enterprise-Wide Procurement. Government-wide contract vehicle for IT products. Many agencies prefer SEWP over GSA for software purchases due to lower fees. Access via Carahsoft or other SEWP contract holders.</p>
+</div>
+
+<!-- Direct Sales -->
+<div class="card">
+  <h3 style="margin-top:0;">Direct Sales / Website</h3>
+  <span class="tag tag-enterprise">Enterprise</span>
+  <span class="tag tag-medium">MEDIUM PRIORITY</span>
+
+  <p>Don't overlook direct sales. For commercial enterprise customers, a "Contact Sales" + self-serve trial on your website can be more effective than marketplace listings, especially for six-figure deals where buyers expect a relationship.</p>
+
+  <h4>Minimum Setup</h4>
+  <ul>
+    <li>Pricing page (even "Contact us for pricing" counts)</li>
+    <li>Product demo or sandbox environment</li>
+    <li>Stripe or PaddleHQ for self-serve billing</li>
+    <li>Standard enterprise contract / order form</li>
+  </ul>
+</div>
+
+<!-- ============================================================ -->
+<h2>4. Recommended Sequencing</h2>
+
+<div class="card">
+  <table>
+    <tr><th>Phase</th><th>Channel</th><th>Timeline</th><th>Effort</th><th>Revenue Potential</th></tr>
+    <tr>
+      <td><strong>Phase 1</strong></td>
+      <td>AWS Marketplace (Enterprise AMI)</td>
+      <td>2-4 weeks</td>
+      <td>Low</td>
+      <td>Medium — enterprise self-serve</td>
+    </tr>
+    <tr>
+      <td><strong>Phase 1</strong></td>
+      <td>Carahsoft partnership</td>
+      <td>4-8 weeks</td>
+      <td>Low</td>
+      <td>High — instant gov access</td>
+    </tr>
+    <tr>
+      <td><strong>Phase 2</strong></td>
+      <td>Azure Marketplace (Enterprise + Gov)</td>
+      <td>3-6 weeks</td>
+      <td>Medium</td>
+      <td>Medium-High — Azure Gov buyers</td>
+    </tr>
+    <tr>
+      <td><strong>Phase 2</strong></td>
+      <td>Iron Bank submission</td>
+      <td>3-6 months</td>
+      <td>High</td>
+      <td>Very High — DoD contracts</td>
+    </tr>
+    <tr>
+      <td><strong>Phase 3</strong></td>
+      <td>GSA Schedule (own or via partner)</td>
+      <td>3-12 months</td>
+      <td>High</td>
+      <td>High — federal civilian</td>
+    </tr>
+    <tr>
+      <td><strong>Phase 3</strong></td>
+      <td>GCP Marketplace</td>
+      <td>3-6 weeks</td>
+      <td>Low</td>
+      <td>Low — smaller market</td>
+    </tr>
+    <tr>
+      <td><strong>Phase 4</strong></td>
+      <td>Red Hat Marketplace / SEWP</td>
+      <td>4-8 weeks</td>
+      <td>Medium</td>
+      <td>Niche — OpenShift shops</td>
+    </tr>
+  </table>
+</div>
+
+<!-- ============================================================ -->
+<h2>5. Competitive Positioning by Channel</h2>
+
+<div class="card">
+  <table>
+    <tr><th>Channel</th><th>SENTINEL Advantage</th><th>Key Competitors Present</th></tr>
+    <tr>
+      <td>AWS Marketplace</td>
+      <td>Air-gap AMI, PII redaction, FedRAMP posture. No other RAG product offers a self-contained air-gapped AMI.</td>
+      <td>Pinecone, Weaviate (cloud only — no AMI)</td>
+    </tr>
+    <tr>
+      <td>Azure Marketplace</td>
+      <td>CosmosDB (MongoDB API) native. CAC/PIV auth for Azure Gov.</td>
+      <td>Azure AI Search (built-in competitor), Elastic</td>
+    </tr>
+    <tr>
+      <td>Iron Bank</td>
+      <td><strong>No RAG competitors in Iron Bank today.</strong> First-mover advantage.</td>
+      <td>None (greenfield)</td>
+    </tr>
+    <tr>
+      <td>GSA Schedule</td>
+      <td>STIG audit logging, clearance-level sector isolation, air-gap compliance.</td>
+      <td>Palantir AIP (different category), Elastic</td>
+    </tr>
+    <tr>
+      <td>Carahsoft</td>
+      <td>Already resells MongoDB. Natural "RAG layer on top of MongoDB" pitch.</td>
+      <td>No direct RAG competitor in Carahsoft's portfolio</td>
+    </tr>
+    <tr>
+      <td>GCP Marketplace</td>
+      <td>Alternative to Vertex AI Search with air-gap option.</td>
+      <td>Vertex AI Search (native), Weaviate</td>
+    </tr>
+  </table>
+
+  <div class="note">
+    <strong>Key Insight:</strong> SENTINEL's strongest competitive moat is in government channels (Iron Bank, Carahsoft, GSA). No existing RAG platform has air-gap deployment, CAC/PIV authentication, STIG audit logging, and clearance-level sector isolation. In commercial channels, you compete on features; in government channels, you compete on compliance — and compliance is where SENTINEL is unmatched.
+  </div>
+</div>
+
+<div class="footer">
+  SENTINEL Marketplace Breakdown | Confidential | 2026-03-02
+</div>
+
+</body>
+</html>

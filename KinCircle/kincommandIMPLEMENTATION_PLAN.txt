@@ -1,0 +1,191 @@
+# KinCircle: From Code to Customers (Updated)
+**Updated:** January 24, 2026  
+**Scope:** Aligns go-to-market steps with current implementation risks and readiness.
+
+---
+
+## Executive Summary (Updated)
+KinCircle’s feature set supports a strong caregiver value proposition, but the current codebase requires a **Security Readiness Sprint** and **stability cleanup** before public deployment or paid usage. This updated plan inserts critical technical checkpoints ahead of the marketing and revenue phases to reduce security risk and improve production reliability.
+
+---
+
+## Current Feature Set (Implemented, with Caveats)
+
+### Core Tracking
+- **Sibling Ledger** - Expense and time tracking with visual contribution charts  
+- **Simplified Debt Balances** - Splitwise-style "who owes whom" calculations  
+- **Recurring Expenses** - Auto-generates entries on schedules  
+- **All Transactions** - Filterable ledger view with delete capability  
+
+### Care Coordination
+- **Help Calendar** - Week view for coordinating care tasks  
+- **Task Claiming** - Siblings can claim available tasks  
+- **Task-to-Entry Conversion** - Completed tasks convert to ledger entries automatically  
+- **Care Schedule** - Task management with completion tracking  
+
+### Health Management
+- **Medication Tracker** - Log meds with dosage, frequency, pharmacy, and cost  
+- **Daily Medication Logging** - Mark taken/skipped with notes  
+- **Medication History** - View adherence over time  
+
+### Family Collaboration (Prototype-Level)
+- **Family Invites** - Shareable invite codes  
+- **Role-Based Access** - Roles exist, but enforcement is partial  
+- **User Switching** - Mock user-switching for testing  
+
+### Documents & Security
+- **Digital Vault** - Document storage with categories  
+- **Security Logging** - Sensitive actions logged  
+- **Privacy Mode** - Scrubs names before AI processing  
+- **Auto-Lock** - Session timeout with PIN protection  
+
+### AI & Assistance
+- **Ask Kin Chat** - Natural language queries about care data  
+- **AI Receipt Scanning** - Extract expense data from photos  
+- **Voice Entry** - Hands-free expense logging  
+
+### Platform
+- **PWA Support** - Installable on mobile  
+- **Local-First Storage** - Works without internet  
+- **Cloud Sync Ready** - Supabase configured, but not production-hardened  
+
+---
+
+## Phase 0: Security Readiness Sprint (Week 0–1)
+**Goal:** Make the app safe enough for public deployment.
+
+1. **Move Gemini API calls to a backend proxy**
+   - Prevent client-side API key exposure  
+   - Add minimal serverless function (Vercel or Supabase Edge)  
+
+2. **Upgrade PIN security**
+   - Replace the current reversible hash with bcrypt or Argon2  
+   - Remove default PIN  
+   - Add rate limiting on lock screen attempts  
+
+3. **Add Content Security Policy (CSP)**
+   - Remove CDN dependencies (Tailwind + esm.sh) for production builds  
+   - Add CSP meta header or server CSP configuration  
+
+4. **Enforce RBAC for destructive actions**
+   - Restrict settings reset, document delete, emergency mode, and exports  
+
+5. **Stabilize build dependencies**
+   - Deduplicate Vite and plugin dependencies  
+
+---
+
+## Phase 1: Deploy & Make It Accessible (Week 1–2)
+**Prerequisite:** Phase 0 completed.
+
+### Step 1.1: Deploy to Vercel
+1. Sign up at https://vercel.com  
+2. Import the `KinCircle` repository  
+3. Build settings:
+   - Framework Preset: Vite  
+   - Root Directory: `kincommand`  
+   - Build Command: `npm run build`  
+   - Output Directory: `dist`  
+4. Add environment variables:
+   - `VITE_SUPABASE_URL`  
+   - `VITE_SUPABASE_ANON_KEY`  
+   - `GEMINI_API_KEY` (server-side only if proxied)  
+
+### Step 1.2: Custom Domain
+1. Buy domain  
+2. Add domain in Vercel  
+3. Configure DNS (CNAME or A records)  
+
+### Step 1.3: Supabase Production
+1. Create production project  
+2. Run `supabase_schema.sql`  
+3. Enable RLS on all tables  
+4. Configure auth (magic link or email)  
+5. Add production keys to Vercel  
+
+### Step 1.4: PWA Verification
+1. Generate icons  
+2. Deploy and test install flow  
+3. Validate offline behavior  
+
+---
+
+## Phase 2: Marketing Foundation (Week 2–3)
+**Goal:** Begin user acquisition while product stabilizes.
+
+1. **Landing Page**
+   - Add `/landing` route or use external landing page  
+   - Include CTA, features, and email capture  
+
+2. **Legal Pages**
+   - Privacy Policy  
+   - Terms of Service  
+   - AI and data usage disclaimers  
+
+---
+
+## Phase 3: Payments & Plans (Week 3–4)
+1. Set up Stripe  
+2. Implement checkout flow  
+3. Store subscription metadata in Supabase  
+4. Gate premium features in-app  
+
+---
+
+## Phase 4: Early Users & Feedback (Week 4–6)
+1. Launch to a personal network  
+2. Collect structured feedback  
+3. Fix blockers before scaling  
+
+---
+
+## Phase 5: Attorney Outreach (Week 6–8)
+1. Prepare attorney kit (one-pager, audit report, demo video)  
+2. Build outreach list  
+3. Run outreach campaign  
+
+---
+
+## Phase 6: Content Marketing (Week 6–10)
+1. Blog + email capture  
+2. Publish 5 foundational posts  
+3. Build simple onboarding email sequence  
+
+---
+
+## Phase 7: First Paid Customers (Week 8–12)
+1. Activation nudges  
+2. Upgrade prompts  
+3. Testimonials collection  
+
+---
+
+## Updated Milestones Checklist
+
+### Week 2
+- [ ] Security Readiness Sprint complete  
+- [ ] App deployed to production  
+- [ ] Custom domain configured  
+
+### Week 4
+- [ ] Landing page live  
+- [ ] Legal pages live  
+- [ ] First feedback cohort onboarded  
+
+### Week 8
+- [ ] Stripe payments live  
+- [ ] First paid customer  
+- [ ] Attorney outreach underway  
+
+### Week 12
+- [ ] 100+ signups  
+- [ ] 30% activation  
+- [ ] $500+ MRR or clear path  
+- [ ] 1+ attorney partner  
+
+---
+
+## Next Action (Do This Today)
+1. Run Phase 0 security checklist  
+2. Deploy to Vercel only after Phase 0 is complete  
+3. Start feedback outreach immediately after deployment

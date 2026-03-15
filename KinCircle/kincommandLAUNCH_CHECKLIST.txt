@@ -1,0 +1,65 @@
+# Launch Checklist (Claims Aligned to Verified Features)
+
+This checklist ensures public‑facing claims stay aligned with verified functionality. Only ship marketing copy for items marked **Verified**.
+
+## 1) Messaging & Compliance
+- [ ] **Verified** security language approved (avoid “HIPAA compliant” or similar unless audited).
+- [ ] Privacy policy and terms reflect current data handling and storage.
+- [ ] Marketing copy distinguishes **Live** vs **Planned** features.
+
+## 2) Product Features (Public Claims)
+
+### Core Tracking
+- [ ] **Verified** Expense and time ledger entries.
+- [ ] **Verified** Simplified balances (who owes whom).
+- [ ] **Verified** Recurring expenses.
+
+### Care Coordination
+- [ ] **Verified** Help calendar with task claiming.
+- [ ] **Verified** Task‑to‑entry conversion.
+
+### Health Management
+- [ ] **Verified** Medication tracking and daily logs.
+
+### Documents & Security
+- [ ] **Verified** Document vault with categories.
+- [ ] **Verified** Security event logging.
+- [ ] **Verified** Privacy mode for AI requests.
+- [ ] **Verified** Auto‑lock with PIN.
+
+### AI & Assistance
+- [ ] **Verified** AI chat assistant.
+- [ ] **Verified** AI receipt scanning.
+- [ ] **Verified** Voice entry.
+
+### Platform
+- [ ] **Verified** PWA manifest + service worker.
+- [ ] **Verified** Local‑first storage and offline support.
+
+## 3) Claims That Must Stay “Planned” Until Implemented
+- [ ] Cloud sync with Supabase and multi‑user collaboration.
+- [ ] One‑click Splitwise import.
+- [ ] Attorney‑ready PDF audit package (if not yet generated end‑to‑end).
+- [ ] Push/email notifications (if not yet wired).
+- [ ] Archive mode and estate‑settlement workflows.
+
+## 4) Security & Technical Readiness (Before Public Launch)
+- [ ] Remove or proxy client‑side API keys (Gemini) via backend.
+- [ ] Replace weak PIN hashing with a modern, salted hash.
+- [ ] Add CSP and remove external script/CDN dependencies for production.
+- [ ] Confirm RBAC enforcement for destructive actions.
+- [ ] Resolve duplicate build dependencies (Vite + plugin versions).
+
+## 5) Landing & Legal
+- [ ] Landing page live with claims limited to verified features.
+- [ ] Privacy Policy live and accurate.
+- [ ] Terms of Service live with disclaimers.
+
+## 6) Launch Readiness
+- [ ] Analytics wired for activation tracking (5 entries in 14 days).
+- [ ] Onboarding prompts guide users to first 5 entries.
+- [ ] Support channel defined (email or help desk).
+
+## 7) Post‑Launch Monitoring
+- [ ] Weekly review of activation, retention, and support tickets.
+- [ ] Update marketing claims as features move from planned to verified.

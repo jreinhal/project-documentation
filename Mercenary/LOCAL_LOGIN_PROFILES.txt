@@ -1,0 +1,24 @@
+Mercenary Login Credentials and Profiles (local)
+
+Current runtime (verified on http://127.0.0.1:8080):
+- Profile: dev
+- Auth mode: DEV
+- Credentials: none (login bypassed)
+- Demo user: DEMO_USER (override via X-Operator-Id header or ?operator=)
+
+Local database users (mongodb://127.0.0.1:27017/mercenary, collection: users):
+1) username: admin
+   authProvider: LOCAL
+   roles: ADMIN
+   password: h!iK*4WzdRehyd6ej^xHjZTPruuY
+
+External auth modes (no local passwords stored):
+- enterprise / OIDC: external IdP (Bearer JWT required)
+- govcloud / CAC: X.509 client certificate (PIV/CAC)
+
+Profile selection:
+- APP_PROFILE controls profile: dev, standard, enterprise, govcloud
+- AUTH_MODE controls auth provider: DEV, STANDARD, OIDC, CAC
+
+Lockout prevention:
+- Admin password reset on 2026-01-17 08:37:52 local time.
