@@ -502,6 +502,10 @@ Hard-fail conditions (must block release):
 - Any manual UI gate outcome recorded as `FAIL`, `BLOCKED`, `SKIPPED`, or `NOT RUN`
 - Any Government-mode startup that succeeds with SCIF-unsafe settings (fail-closed guardrail regression)
 
+**Gate trigger-scope invariant (path-triggered safety/enforcement gates).** Safety and enforcement CI gates that decide whether a required validation job must run must evaluate the full pull-request diff (`base..HEAD`), not only the latest commit. HEAD-only checks are acceptable only for non-authoritative cost-saving hints (e.g. the docs-only `preflight` skip) where a false skip cannot hide a changed safety, security, auth, dependency, workflow, or enforcement surface. On push-to-master / squash-merge commits, single-commit evaluation is acceptable because the pushed commit represents the merged PR state.
+
+_Originating review: PR #785 (Codex P2). The `sidecar-smoke` lane originally keyed `sidecar_changed` off the HEAD commit only (`git diff HEAD~1 HEAD`), so a sidecar dependency change in an earlier commit of a multi-commit PR could leave the required smoke skipped — letting a sidecar dependency conflict merge unscanned. Fixed to evaluate the whole-PR diff against the PR base SHA and to gate the aggregate `build` job via its own always-on step (mirroring `ci-retrieval-quality-invariants`), so the smoke blocks merge even when the docs-only skip heuristic fires._
+
 ### 2.7 Government SCIF Release Gate (Required)
 
 This gate is mandatory when:
